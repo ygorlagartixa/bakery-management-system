@@ -42,4 +42,4 @@ Throughout the development of this project, I improved my knowledge and skills i
 - Project planning, development, and technical documentation.
 
 # 👤 | Author  <a id="Author"></a>
-**Ygor Otávio | Systems Analysis and Development Student • Linux • Cybersecurity • Networking.
+**Ygor Otávio** | Systems Analysis and Development Student • Linux • Cybersecurity • Networking.
