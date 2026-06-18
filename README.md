@@ -2,7 +2,7 @@
 University Center Rio São Francisco - Unirios
 > Project Status: Complete ✓
 
-<p align="center">  <a href ="#💻 | Technologies Used"> Technologies Used</a>|<a href ="#🎯 | Challenge"> Challenge</a>|<a href ="#💡 | Solution"> Solution</a>|<a href ="#📄 | Documentation"> Documentation</a>|<a href ="#🧠 | What I Learned"> What I Learned</a>|<a href ="#👤 | Author">Author</a></p>
+<p align="center">  <a href ="#Technologies Used">Technologies Used</a>|<a href ="#Challenge"> Challenge</a>|<a href ="#Solution"> Solution</a>|<a href ="#Documentation"> Documentation</a>|<a href ="#What I Learned"> What I Learned</a>|<a href ="#Author">Author</a></p>
 
 # 💻 | Technologies Used  <a id="Technologies Used"></a>
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat&logo=html5&logoColor=white)
