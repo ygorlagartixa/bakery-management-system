@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portal do Confeiteiro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- ========== SIDEBAR ========== -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">🍬</span>
+      <img id="sidebar-logo-img" src="" alt="Logo" style="display:none; width:32px; height:32px; object-fit:cover; border-radius:6px;"/>
+      <span class="logo-text">Doce Gestão</span>
+    </div>
+    <nav class="sidebar-nav"></nav>
+    <div class="sidebar-bottom">
+      <button class="nav-btn" data-section="configuracoes">
+        <span class="nav-icon">⚙️</span> Configurações
+      </button>
+    </div>
+  </aside>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main-content">
+    <header class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div class="topbar-date" id="topbar-date"></div>
+    </header>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section active" id="section-dashboard">
+      <div class="cards-row">
+        <div class="card card-stat">
+          <div class="card-stat-label">Entradas do mês</div>
+          <div class="card-stat-value green" id="dash-entradas">R$ 0,00</div>
+        </div>
+        <div class="card card-stat">
+          <div class="card-stat-label">Saídas do mês</div>
+          <div class="card-stat-value red" id="dash-saidas">R$ 0,00</div>
+        </div>
+        <div class="card card-stat">
+          <div class="card-stat-label">Lucro do mês</div>
+          <div class="card-stat-value" id="dash-lucro">R$ 0,00</div>
+        </div>
+        <div class="card card-stat">
+          <div class="card-stat-label">Pedidos realizados</div>
+          <div class="card-stat-value" id="dash-pedidos">0</div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card" style="flex:1">
+          <div class="card-title">⚠️ Ingredientes em falta</div>
+          <ul class="alert-list" id="dash-alertas">
+            <li class="empty-msg">Nenhum ingrediente em falta.</li>
+          </ul>
+        </div>
+        <div class="card" style="flex:1">
+          <div class="card-title">📋 Últimos pedidos</div>
+          <ul class="alert-list" id="dash-ultimos-pedidos">
+            <li class="empty-msg">Nenhum pedido registrado.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== INGREDIENTES ===== -->
+    <section class="section" id="section-ingredientes">
+      <div class="section-header">
+        <h2 class="section-title">Cadastro de Ingredientes</h2>
+        <button class="btn-primary" id="btn-abrir-modal-ingrediente">+ Novo Ingrediente</button>
+      </div>
+      <div class="card">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Custo da embalagem</th>
+              <th>Custo por unidade</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-ingredientes">
+            <tr><td colspan="4" class="empty-msg">Nenhum ingrediente cadastrado.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal Ingrediente -->
+      <div class="modal-overlay" id="modal-ingrediente">
+        <div class="modal">
+          <div class="modal-header">
+            <h3 id="modal-ingrediente-titulo">Novo Ingrediente</h3>
+            <button class="modal-close" data-modal="modal-ingrediente">✕</button>
+          </div>
+          <div class="modal-body">
+            <label>Nome do ingrediente</label>
+            <input type="text" id="ing-nome" placeholder="Ex: Leite em pó"/>
+
+            <label>Custo da embalagem (R$)</label>
+            <input type="number" id="ing-custo" placeholder="Ex: 15.00" min="0" step="0.01"/>
+
+            <label>Quantidade na embalagem</label>
+            <input type="number" id="ing-qtd-embalagem" placeholder="Ex: 1000" min="0" step="0.01"/>
+
+            <label>Unidade de medida</label>
+            <div class="toggle-group">
+              <button type="button" class="toggle-btn active" id="toggle-g">g (gramas)</button>
+              <button type="button" class="toggle-btn" id="toggle-ml">ml</button>
+            </div>
+            <input type="hidden" id="ing-unidade" value="g"/>
+
+            <div class="info-box" id="ing-preview-box" style="display:none">
+              <span class="info-label">Custo por unidade</span>
+              <span id="ing-preview-txt">—</span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-ingrediente">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-ingrediente">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DOCES ===== -->
+    <section class="section" id="section-doces">
+      <div class="section-header">
+        <h2 class="section-title">Cadastro de Doces</h2>
+        <button class="btn-primary" id="btn-abrir-modal-doce">+ Novo Doce</button>
+      </div>
+      <div class="card">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Ingredientes</th>
+              <th>Custo total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-doces">
+            <tr><td colspan="4" class="empty-msg">Nenhum doce cadastrado.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal Doce -->
+      <div class="modal-overlay" id="modal-doce">
+        <div class="modal modal-lg">
+          <div class="modal-header">
+            <h3 id="modal-doce-titulo">Novo Doce</h3>
+            <button class="modal-close" data-modal="modal-doce">✕</button>
+          </div>
+          <div class="modal-body">
+            <label>Nome do doce</label>
+            <input type="text" id="doce-nome" placeholder="Ex: Brigadeiro"/>
+
+            <label>Ingredientes utilizados</label>
+            <div id="doce-ingredientes-lista"></div>
+            <button class="btn-secondary" id="btn-add-ingrediente-doce" style="margin-top:4px">+ Adicionar ingrediente</button>
+
+            <div class="custo-preview">
+              <span>Custo calculado:</span>
+              <strong id="doce-custo-preview">R$ 0,00</strong>
+            </div>
+
+            <!-- Quick create ingrediente -->
+            <div class="quick-create-box">
+              <button type="button" class="btn-secondary" id="btn-toggle-quick-ing">
+                ✚ Criar novo ingrediente aqui
+              </button>
+              <div id="quick-ing-form" style="display:none">
+                <label>Nome</label>
+                <input type="text" id="quick-ing-nome" placeholder="Ex: Coco ralado"/>
+                <label>Custo da embalagem (R$)</label>
+                <input type="number" id="quick-ing-custo" placeholder="Ex: 8.00" min="0" step="0.01"/>
+                <label>Quantidade na embalagem</label>
+                <input type="number" id="quick-ing-qtd" placeholder="Ex: 200" min="0" step="0.01"/>
+                <label>Unidade</label>
+                <div class="toggle-group">
+                  <button type="button" class="toggle-btn active" id="quick-toggle-g">g</button>
+                  <button type="button" class="toggle-btn" id="quick-toggle-ml">ml</button>
+                </div>
+                <input type="hidden" id="quick-ing-unidade" value="g"/>
+                <button type="button" class="btn-primary" id="btn-salvar-quick-ing" style="margin-top:4px">Criar ingrediente</button>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-doce">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-doce">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ESTOQUE ===== -->
+    <section class="section" id="section-estoque">
+      <div class="section-header">
+        <h2 class="section-title">Gestor de Estoque</h2>
+        <button class="btn-primary" id="btn-abrir-modal-estoque">+ Entrada de Estoque</button>
+      </div>
+      <div class="card">
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Ingrediente</th>
+              <th>Disponível</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-estoque">
+            <tr><td colspan="4" class="empty-msg">Nenhum ingrediente no estoque.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal Entrada -->
+      <div class="modal-overlay" id="modal-estoque">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Entrada de Estoque</h3>
+            <button class="modal-close" data-modal="modal-estoque">✕</button>
+          </div>
+          <div class="modal-body">
+            <label>Ingrediente</label>
+            <select id="estoque-ingrediente"></select>
+            <label>Quantidade a adicionar</label>
+            <input type="number" id="estoque-quantidade" placeholder="Ex: 1000" min="0" step="0.01"/>
+            <span id="estoque-unidade-hint" style="font-size:0.8rem; color:var(--txt-secondary); font-style:italic;"></span>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-estoque">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-estoque">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Editar Estoque -->
+      <div class="modal-overlay" id="modal-editar-estoque">
+        <div class="modal">
+          <div class="modal-header">
+            <h3>Editar Estoque</h3>
+            <button class="modal-close" data-modal="modal-editar-estoque">✕</button>
+          </div>
+          <div class="modal-body">
+            <label>Ingrediente</label>
+            <input type="text" id="editar-estoque-nome" disabled style="opacity:0.6"/>
+            <label>Quantidade atual</label>
+            <input type="text" id="editar-estoque-atual" disabled style="opacity:0.6"/>
+            <label>Nova quantidade</label>
+            <input type="number" id="editar-estoque-nova" min="0" step="0.01"/>
+            <span id="editar-estoque-hint" style="font-size:0.8rem; color:var(--txt-secondary); font-style:italic;"></span>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-editar-estoque">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-editar-estoque">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PEDIDOS ===== -->
+    <section class="section" id="section-pedidos">
+      <div class="section-header">
+        <h2 class="section-title">Gestor de Pedidos</h2>
+        <button class="btn-primary" id="btn-abrir-modal-pedido">+ Novo Pedido</button>
+      </div>
+
+      <!-- Barra de filtros -->
+      <div class="filter-bar">
+        <div class="filter-group">
+          <button class="filter-btn active" data-filter="todos">Todos</button>
+          <button class="filter-btn" data-filter="producao">🔥 Em produção</button>
+          <button class="filter-btn" data-filter="finalizado">✅ Finalizados</button>
+        </div>
+        <div class="filter-search">
+          <input type="text" id="pedido-busca" placeholder="Buscar por nome ou doce..."/>
+          <select id="pedido-ordenar">
+            <option value="data-desc">Mais recentes</option>
+            <option value="data-asc">Mais antigos</option>
+            <option value="nome">Nome do cliente</option>
+            <option value="doce">Nome do doce</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Grupo: Em produção -->
+      <div class="pedidos-grupo" id="grupo-producao">
+        <div class="grupo-titulo">🔥 Em Produção</div>
+        <div class="card">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Data</th><th>Cliente</th><th>Doce</th>
+                <th>Cobrado</th><th>Frete</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-producao">
+              <tr><td colspan="6" class="empty-msg">Nenhum pedido em produção.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Grupo: Finalizados -->
+      <div class="pedidos-grupo" id="grupo-finalizado">
+        <div class="grupo-titulo">✅ Finalizados</div>
+        <div class="card">
+          <table class="tabela">
+            <thead>
+              <tr>
+                <th>Data</th><th>Cliente</th><th>Doce</th>
+                <th>Cobrado</th><th>Frete</th><th>Lucro</th><th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-finalizado">
+              <tr><td colspan="7" class="empty-msg">Nenhum pedido finalizado.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Modal Novo Pedido -->
+      <div class="modal-overlay" id="modal-pedido">
+        <div class="modal modal-lg">
+          <div class="modal-header">
+            <h3>Novo Pedido</h3>
+            <button class="modal-close" data-modal="modal-pedido">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-section-label">🍬 Encomenda</div>
+            <label>Doce</label>
+            <select id="pedido-doce"><option value="">Selecione o doce</option></select>
+            <div class="info-box" id="pedido-info-doce" style="display:none">
+              <span class="info-label">Ingredientes</span>
+              <span id="pedido-ingredientes-desc">—</span>
+              <span class="info-label" style="margin-top:6px">Custo de produção</span>
+              <span id="pedido-custo-doce">R$ 0,00</span>
+            </div>
+            <label>Data do pedido</label>
+            <input type="date" id="pedido-data"/>
+            <div class="form-section-label">👤 Dados do cliente</div>
+            <label>Nome</label>
+            <input type="text" id="pedido-cliente-nome" placeholder="Ex: Maria Silva"/>
+            <label>Telefone</label>
+            <input type="text" id="pedido-cliente-tel" placeholder="Ex: (12) 99999-9999"/>
+            <label>Endereço</label>
+            <input type="text" id="pedido-cliente-end" placeholder="Ex: Rua das Flores, 10 - Centro"/>
+            <label>Distância aproximada (km)</label>
+            <input type="number" id="pedido-km" placeholder="Ex: 5" min="0" step="0.1"/>
+            <div class="form-section-label">💰 Finalização</div>
+            <label>Valor cobrado pelo doce (R$)</label>
+            <input type="number" id="pedido-cobrado" placeholder="Ex: 80.00" min="0" step="0.01"/>
+            <div class="frete-preview">
+              Frete sugerido: <strong id="pedido-frete-valor">R$ 0,00</strong>
+              <span class="frete-info">(R$ <span id="frete-km-label">0,70</span>/km)</span>
+            </div>
+            <label class="checkbox-label">
+              <input type="checkbox" id="pedido-cobrar-frete"/>
+              Cobrar frete do cliente
+            </label>
+            <div class="lucro-preview">
+              <div class="lucro-row">
+                <span>Valor total do cliente:</span>
+                <strong id="pedido-total-cliente">R$ 0,00</strong>
+              </div>
+              <div class="lucro-row" style="margin-top:6px">
+                <span>Lucro estimado:</span>
+                <strong id="pedido-lucro-preview">R$ 0,00</strong>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-pedido">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-pedido">Registrar Pedido</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Editar Pedido -->
+      <div class="modal-overlay" id="modal-editar-pedido">
+        <div class="modal modal-lg">
+          <div class="modal-header">
+            <h3>Editar Pedido</h3>
+            <button class="modal-close" data-modal="modal-editar-pedido">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="form-section-label">👤 Dados do cliente</div>
+            <label>Nome</label>
+            <input type="text" id="edit-pedido-nome"/>
+            <label>Telefone</label>
+            <input type="text" id="edit-pedido-tel"/>
+            <label>Endereço</label>
+            <input type="text" id="edit-pedido-end"/>
+            <div class="form-section-label">💰 Finalização</div>
+            <label>Valor cobrado (R$)</label>
+            <input type="number" id="edit-pedido-cobrado" min="0" step="0.01"/>
+            <label>Distância (km)</label>
+            <input type="number" id="edit-pedido-km" min="0" step="0.1"/>
+            <label class="checkbox-label">
+              <input type="checkbox" id="edit-pedido-cobrar-frete"/>
+              Cobrar frete do cliente
+            </label>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-secondary" data-modal="modal-editar-pedido">Cancelar</button>
+            <button class="btn-primary" id="btn-salvar-editar-pedido">Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FINANCEIRO ===== -->
+    <section class="section" id="section-financeiro">
+      <div class="section-header">
+        <h2 class="section-title">Financeiro</h2>
+      </div>
+      <div class="cards-row">
+        <div class="card card-stat">
+          <div class="card-stat-label">Total de entradas</div>
+          <div class="card-stat-value green" id="fin-entradas">R$ 0,00</div>
+        </div>
+        <div class="card card-stat">
+          <div class="card-stat-label">Total de saídas</div>
+          <div class="card-stat-value red" id="fin-saidas">R$ 0,00</div>
+        </div>
+        <div class="card card-stat">
+          <div class="card-stat-label">Lucro total</div>
+          <div class="card-stat-value" id="fin-lucro">R$ 0,00</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Histórico de pedidos</div>
+        <table class="tabela">
+          <thead>
+            <tr>
+              <th>Data</th><th>Cliente</th><th>Doce</th>
+              <th>Entrada</th><th>Saída</th><th>Lucro</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-historico">
+            <tr><td colspan="6" class="empty-msg">Nenhum registro encontrado.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== CONFIGURAÇÕES ===== -->
+    <section class="section" id="section-configuracoes">
+      <div class="section-header">
+        <h2 class="section-title">Configurações</h2>
+      </div>
+      <div class="card">
+        <div class="card-title">🎨 Identidade do sistema</div>
+        <div class="config-group">
+          <div class="config-logo-preview">
+            <div class="logo-preview-box" id="logo-preview-box">
+              <span id="logo-preview-emoji">🍬</span>
+              <img id="logo-preview-img" src="" alt="Logo" style="display:none"/>
+            </div>
+            <div class="config-logo-actions">
+              <label class="btn-secondary btn-upload" for="config-logo-upload">📁 Escolher imagem</label>
+              <input type="file" id="config-logo-upload" accept="image/*" style="display:none"/>
+              <button class="btn-secondary" id="btn-remover-logo">✕ Remover</button>
+            </div>
+          </div>
+        </div>
+        <div class="config-group">
+          <label class="config-label">Nome do sistema</label>
+          <div class="config-input-row">
+            <input type="text" id="config-nome-sistema" placeholder="Ex: Doce da Ana..." maxlength="30"/>
+            <button class="btn-primary" id="btn-salvar-nome">Salvar</button>
+          </div>
+          <span class="config-hint">Aparece na barra lateral e na aba do navegador.</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🔀 Reordenar menu</div>
+        <p class="config-hint" style="margin-bottom:16px">Arraste os itens para reorganizar a ordem das abas.</p>
+        <ul class="sortable-list" id="sortable-nav"></ul>
+        <div style="display:flex; gap:10px; margin-top:16px">
+          <button class="btn-primary" id="btn-salvar-ordem">💾 Salvar ordem</button>
+          <button class="btn-secondary" id="btn-resetar-ordem">↺ Restaurar padrão</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">🚗 Configuração de frete</div>
+        <div class="config-group">
+          <label class="config-label">Valor por km (R$)</label>
+          <div class="config-input-row">
+            <input type="number" id="config-frete-km" placeholder="0.70" min="0" step="0.01" style="max-width:180px"/>
+            <button class="btn-primary" id="btn-salvar-frete">Salvar</button>
+          </div>
+          <span class="config-hint">Padrão: R$ 0,70 por km.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
