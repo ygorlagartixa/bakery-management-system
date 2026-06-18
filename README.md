@@ -29,6 +29,8 @@ Main features include:
 The goal is to replace traditional management methods with a more organized, user-friendly, and efficient system.
 
 # 📄 | Documentation  <a id="Documentation"></a>
+* [Manual de Instalação](docs/manual/instalacao.md)
+* [Manual do Usuário](docs/manual/usuario.md)
 
 # 🧠 | What I Learned  <a id="What I Learned"></a>
 Throughout the development of this project, I improved my knowledge and skills in:
